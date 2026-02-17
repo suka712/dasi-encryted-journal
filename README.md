@@ -1,4 +1,4 @@
-# Haiku
+# Teul (틀) Collab
 
 A collaborative chat application where multiple users can join discussions with an AI.
 
