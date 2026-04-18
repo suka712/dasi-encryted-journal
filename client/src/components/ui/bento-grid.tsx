@@ -2,61 +2,48 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "../../lib/utils";
 import {
   ArrowRightIcon,
-  SparklesIcon,
-  GlobeIcon,
-  AtSignIcon,
-  SearchIcon,
-  FileTextIcon,
+  ShieldCheckIcon,
+  ZapIcon,
+  PenToolIcon,
+  CloudIcon,
 } from "lucide-react";
-import type { ReactNode } from "react";
 
 export const CARDS = [
-  // First row
   {
-    Icon: SparklesIcon,
-    name: "Generate the perfect name",
+    Icon: ShieldCheckIcon,
+    name: "Always Private",
     description:
-      "Describe what you're building and we'll generate brand name candidates that are memorable, available, and ready to claim.",
+      "End-to-End Encryption. Your notes are encrypted before they even leave your device. Your eyes only, literally.",
     href: "#",
-    cta: "Describe your idea",
-    className: "col-span-2 lg:col-span-2",
+    cta: "Learn about privacy",
+    className: "col-span-3 lg:col-span-2",
   },
   {
-    Icon: GlobeIcon,
-    name: "Domain Availability",
+    Icon: PenToolIcon,
+    name: "Distraction-Free",
     description:
-      "Check .com, .dev, .io, and dozens more TLDs instantly. See what's taken, what's premium, and what's yours.",
+      "A minimalist writing environment designed to help you focus on your thoughts, not the UI.",
     href: "#",
-    cta: "Check and claim now",
-    className: "col-span-2 lg:col-span-1",
-  },
-  // Second row
-  {
-    Icon: AtSignIcon,
-    name: "Social Handles",
-    description:
-      "Twitter/X, Instagram, TikTok, Reddit — check handle availability across every platform in one shot.",
-    href: "#",
-    cta: "Grab them all",
-    className: "col-span-2 lg:col-span-1",
-  },
-  {
-    Icon: SearchIcon,
-    name: "Search Presence",
-    description:
-      "See how crowded your name is on Google, the App Store, and Play Store before you commit to it.",
+    cta: "Explore the editor",
     className: "col-span-3 lg:col-span-1",
-    href: "#",
-    cta: "See how you rank",
   },
   {
-    Icon: FileTextIcon,
-    name: "Summary report",
+    Icon: ZapIcon,
+    name: "Fast & Powerful",
     description:
-      "Get a shareable summary and comparison of every check — availability, conflicts, and top picks — to share with your team.",
-    className: "col-span-3 lg:col-span-1",
+      "Instant search, full markdown support, and a responsive experience that keeps up with your mind.",
     href: "#",
-    cta: "Learn more",
+    cta: "See all features",
+    className: "col-span-3 lg:col-span-1",
+  },
+  {
+    Icon: CloudIcon,
+    name: "Secure Sync",
+    description:
+      "Access your journal from any device. Your data stays synced and secure wherever you go.",
+    href: "#",
+    cta: "Download the app",
+    className: "col-span-3 lg:col-span-2",
   },
 ];
 
@@ -98,36 +85,36 @@ const BentoCard = ({
   <div
     key={name}
     className={cn(
-      "group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl h-50",
-      "bg-card border border-white/8 shadow-md",
-      "hover:border-primary/30 hover:shadow-[0_0_32px_-8px_oklch(65%_0.22_268/0.35)]",
+      "group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-3xl h-72",
+      "bg-card border-2 border-border/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+      "hover:border-primary/30 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:-rotate-1",
       "transition-all duration-500",
       className
     )}
   >
-    {/* Subtle gradient mesh inside card */}
-    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,oklch(65%_0.22_268/0.06)_0%,transparent_60%)] pointer-events-none" />
-    <div className="pointer-events-none z-10 flex flex-col gap-1 p-6 transition-all duration-300 group-hover:-translate-y-10">
-      <Icon className="h-12 w-12 origin-left text-primary transition-all duration-300 ease-in-out group-hover:scale-75 group-hover:text-cyan-400" />
-      <h3 className="text-xl font-semibold text-foreground">{name}</h3>
-      <p className="max-w-lg text-muted-foreground">{description}</p>
+    <div className="pointer-events-none z-10 flex flex-col gap-2 p-8 transition-all duration-300 group-hover:-translate-y-2">
+      <div className="bg-primary/10 w-fit p-4 rounded-2xl transition-colors duration-300 group-hover:bg-primary/20">
+        <Icon className="h-10 w-10 text-primary transition-all duration-300 ease-in-out" />
+      </div>
+      <h3 className="text-3xl font-heading text-foreground mt-4">{name}</h3>
+      <p className="max-w-lg text-muted-foreground leading-relaxed font-heading italic text-lg opacity-80">{description}</p>
     </div>
 
     <div
       className={cn(
-        "absolute bottom-0 flex w-full translate-y-10 flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+        "absolute bottom-0 flex w-full translate-y-10 flex-row items-center p-8 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
       )}
     >
       <a
         href={href}
         className={buttonVariants({
           size: "sm",
-          variant: "ghost",
-          className: "cursor-pointer text-primary hover:text-cyan-400",
+          variant: "link",
+          className: "cursor-pointer text-primary p-0 h-auto text-lg font-bold underline decoration-2 underline-offset-4",
         })}
       >
         {cta}
-        <ArrowRightIcon className="ml-2 h-4 w-4" />
+        <ArrowRightIcon className="ml-2 h-5 w-5" />
       </a>
     </div>
   </div>

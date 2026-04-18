@@ -88,24 +88,25 @@ export const SignInForm = ({
       {...props}
       onSubmit={handleSubmit}
     >
-      <FieldGroup>
+      <FieldGroup className="gap-8">
         <Field className="mt-3">
           {step === "email" ? (
-            <>
+            <div className="relative">
               <Input
                 id="email"
                 type="email"
-                placeholder="Email address"
+                placeholder="write your email here..."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="rounded-2xl bg-white border-2 border-primary/20 focus:border-primary/50 transition-all h-14 text-lg font-heading italic shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]"
               />
-            </>
+              <div className="absolute -top-3 -right-2 bg-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded-full rotate-12 shadow-sm text-yellow-900">NEW</div>
+            </div>
           ) : (
             <>
-              <div className="flex items-center justify-between">
-              </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col items-center gap-6">
+                <p className="text-sm font-heading italic text-muted-foreground">Enter the magic code ✨</p>
                 <InputOTP
                   maxLength={6}
                   value={otp}
@@ -113,34 +114,45 @@ export const SignInForm = ({
                   disabled={loading}
                   autoFocus
                 >
-                  <InputOTPGroup><InputOTPSlot index={0} /></InputOTPGroup>
-                  <InputOTPGroup><InputOTPSlot index={1} /></InputOTPGroup>
-                  <InputOTPGroup><InputOTPSlot index={2} /></InputOTPGroup>
-                  <InputOTPGroup><InputOTPSlot index={3} /></InputOTPGroup>
-                  <InputOTPGroup><InputOTPSlot index={4} /></InputOTPGroup>
-                  <InputOTPGroup><InputOTPSlot index={5} /></InputOTPGroup>
+                  <InputOTPGroup className="gap-3">
+                    <InputOTPSlot index={0} className="rounded-xl border-2 border-primary/20 h-14 w-12 text-xl font-bold bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]" />
+                    <InputOTPSlot index={1} className="rounded-xl border-2 border-primary/20 h-14 w-12 text-xl font-bold bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]" />
+                    <InputOTPSlot index={2} className="rounded-xl border-2 border-primary/20 h-14 w-12 text-xl font-bold bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]" />
+                  </InputOTPGroup>
+                  <InputOTPGroup className="gap-3">
+                    <InputOTPSlot index={3} className="rounded-xl border-2 border-primary/20 h-14 w-12 text-xl font-bold bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]" />
+                    <InputOTPSlot index={4} className="rounded-xl border-2 border-primary/20 h-14 w-12 text-xl font-bold bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]" />
+                    <InputOTPSlot index={5} className="rounded-xl border-2 border-primary/20 h-14 w-12 text-xl font-bold bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]" />
+                  </InputOTPGroup>
                 </InputOTP>
 
-                <Button type="button" variant="secondary" size="icon" disabled={loading} onClick={handleResend} title="Resend code" >
-                  <RotateCcw />
-                </Button>
-                <Button type="button" variant="secondary" size="icon" disabled={loading} onClick={() => { setStep("email"); setOtp(""); }} title="Change email">
-                  <Pen />
-                </Button>
+                <div className="flex gap-4">
+                  <Button type="button" variant="ghost" size="sm" disabled={loading} onClick={handleResend} className="text-muted-foreground hover:text-primary font-heading italic">
+                    <RotateCcw className="mr-2 size-4" /> Send again?
+                  </Button>
+                  <Button type="button" variant="ghost" size="sm" disabled={loading} onClick={() => { setStep("email"); setOtp(""); }} className="text-muted-foreground hover:text-primary font-heading italic">
+                    <Pen className="mr-2 size-4" /> Oops, wrong email
+                  </Button>
+                </div>
               </div>
             </>
           )}
         </Field>
 
         <Field>
-          <Button type="submit" disabled={loading}>
-            {loading ? <Loader2 className="animate-spin" /> : step === "email" ? "Continue with Email" : "Sign In"}
+          <Button type="submit" disabled={loading} className="w-full h-14 rounded-2xl text-xl font-heading shadow-[0_8px_0px_0px_oklch(0.5_0.15_35)] hover:shadow-[0_4px_0px_0px_oklch(0.5_0.15_35)] hover:translate-y-[4px] active:shadow-none active:translate-y-[8px] transition-all bg-primary text-white border-2 border-black/10">
+            {loading ? <Loader2 className="animate-spin" /> : step === "email" ? "Open My Journal 📖" : "Sign Me In! ✨"}
           </Button>
         </Field>
 
-        <FieldSeparator>Or with</FieldSeparator>
-        <Field className="gap-3">
-          <OAuthButtons/>
+        <div className="relative flex items-center gap-4 py-2">
+          <div className="h-0.5 bg-primary/10 flex-1 rounded-full" />
+          <span className="text-primary/40 text-xs font-bold uppercase tracking-widest">social sign in</span>
+          <div className="h-0.5 bg-primary/10 flex-1 rounded-full" />
+        </div>
+
+        <Field className="gap-4">
+          <OAuthButtons />
         </Field>
       </FieldGroup>
     </form>

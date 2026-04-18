@@ -25,27 +25,17 @@ const NavBar = () => {
           <Logo />
           <button
             onClick={() => navigate("/")}
-            className="text-xl"
+            className="text-xl font-heading"
           >
-            KatanaID
+            Dasi
           </button>
         </div>
 
         {/* Desktop navigation */}
         <div className="hidden lg:flex flex-3 gap-2 justify-center">
-          <div>
-            <Button variant="secondary" className="rounded-l-3xl rounded-r-none border border-white/8">Development</Button>
-            <Button variant="secondary" className="rounded-none border-y border-white/8">Donate</Button>
-            <Button variant="secondary" className="rounded-l-none rounded-r-md border border-white/8">Support</Button>
-          </div>
-          <div>
-            <Button variant="secondary" className="rounded-l-md rounded-r-none border border-white/8" asChild>
-              <a href="https://docs.katanaid.com/">Docs</a>
-            </Button>
-            <ContactDialog>
-              <Button variant="secondary" className="rounded-l-none rounded-r-3xl border border-white/8">Contact</Button>
-            </ContactDialog>
-          </div>
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground">Privacy</Button>
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground">Features</Button>
+          <Button variant="ghost" className="text-muted-foreground hover:text-foreground">About</Button>
         </div>
 
         {/* Desktop right section */}
@@ -53,11 +43,11 @@ const NavBar = () => {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-primary/10 text-primary hover:bg-primary/20">
-                  <Globe className="size-5" />
+                <NavigationMenuTrigger className="bg-primary/5 text-primary hover:bg-primary/10">
+                  <Globe className="size-4" />
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="p-2">
+                  <div className="p-2 min-w-[120px]">
                     <NavigationMenuLink asChild>
                       <button className="block w-full px-3 py-2 text-sm rounded-md hover:bg-accent text-left">
                         English
@@ -73,8 +63,8 @@ const NavBar = () => {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-            <Button onClick={() => navigate("/signup")}>
-              Sign in
+            <Button onClick={() => navigate("/signin")}>
+              Open Journal
             </Button>
         </div>
 
@@ -99,25 +89,14 @@ const NavBar = () => {
         <div className="lg:hidden border-t">
           <div className="flex flex-col gap-2 px-4 py-4">
             <Button variant="ghost" className="justify-start">
-              Stories
+              Privacy
             </Button>
             <Button variant="ghost" className="justify-start">
-              Events
+              Features
             </Button>
             <Button variant="ghost" className="justify-start">
-              Friends
+              About
             </Button>
-            <Button variant="ghost" className="justify-start">
-              Support
-            </Button>
-            <Button variant="ghost" className="justify-start" asChild>
-              <a href="https://docs.katanaid.com/">Docs</a>
-            </Button>
-            <ContactDialog>
-              <Button variant="ghost" className="justify-start">
-                Contact
-              </Button>
-            </ContactDialog>
             <div className="border-t my-2" />
             <p className="text-sm text-muted-foreground px-4">Language</p>
             <Button variant="ghost" className="justify-start">
@@ -131,10 +110,10 @@ const NavBar = () => {
                 className="w-full"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate("/signup");
+                  navigate("/signin");
                 }}
               >
-                Sign in
+                Open Journal
               </Button>
           </div>
         </div>
