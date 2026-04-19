@@ -1,359 +1,218 @@
 import { motion } from "framer-motion";
-import { SparklesIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import AnimationContainer from "@/components/ui/animation-container";
-import MaxWidthWrapper from "@/components/ui/max-width-container";
-import { BentoCard, BentoGrid, CARDS } from "@/components/ui/bento-grid";
-import MagicBadge from "@/components/ui/magic-badge";
-import Footer from "@/components/landing-page/Footer";
-import NavBar from "@/components/landing-page/NavBar";
+import { Sparkles, ArrowRight, Pen, ShieldCheck, Cloud } from "lucide-react";
 import { SignInForm } from "@/components/signin/SignInForm";
 import { Card } from "@/components/ui/card";
-
-const DoodleSparkle = ({ className }: { className?: string }) => (
-  <motion.svg
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={cn("w-8 h-8 text-primary/30", className)}
-    animate={{ 
-      rotate: [0, 15, -15, 0],
-      scale: [1, 1.1, 0.9, 1]
-    }}
-    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-  >
-    <path d="M12 3V6M12 18V21M6 12H3M21 12H18M18.364 5.63604L16.2426 7.75736M7.75736 16.2426L5.63604 18.364M18.364 18.364L16.2426 16.2426M7.75736 7.75736L5.63604 5.63604" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-  </motion.svg>
-);
-
-const DoodleHeart = ({ className }: { className?: string }) => (
-  <motion.svg
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={cn("w-10 h-10 text-rose-400/30", className)}
-    animate={{ 
-      y: [0, -5, 0],
-      rotate: [-5, 5, -5]
-    }}
-    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-  >
-    <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-  </motion.svg>
-);
-
-const DoodleLoop = ({ className }: { className?: string }) => (
-  <motion.svg
-    viewBox="0 0 100 100"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={cn("w-20 h-20 text-blue-400/20", className)}
-    animate={{ 
-      rotate: [0, 360]
-    }}
-    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-  >
-    <path d="M20 50C20 33.4315 33.4315 20 50 20C66.5685 20 80 33.4315 80 50C80 66.5685 66.5685 80 50 80C33.4315 80 20 66.5685 20 50Z" stroke="currentColor" strokeWidth="2" strokeDasharray="6 6" strokeLinecap="round"/>
-  </motion.svg>
-);
+import NavBar from "@/components/landing-page/NavBar";
+import Footer from "@/components/landing-page/Footer";
 
 const EntryCard = ({ 
-  children, 
+  text, 
+  date, 
   rotation, 
   x, 
   y, 
-  delay = 0,
-  className 
+  delay = 0 
 }: { 
-  children: React.ReactNode; 
+  text: string; 
+  date: string; 
   rotation: number; 
   x: string; 
   y: string; 
   delay?: number;
-  className?: string;
 }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.8, rotate: rotation, x, y }}
-    animate={{ 
-      opacity: 1, 
-      scale: 1, 
-      rotate: rotation,
-      y
-    }}
-    transition={{ 
-      duration: 0.5, 
-      delay,
-      ease: "easeOut"
-    }}
-    className={cn(
-      "absolute hidden md:flex flex-col p-6 bg-linear-to-br from-card to-card/95 border border-primary/5 shadow-sm rounded-2xl w-56 z-0 pointer-events-none",
-      className
-    )}
+    initial={{ opacity: 0, scale: 0.9, rotate: rotation, x, y }}
+    animate={{ opacity: 1, scale: 1, rotate: rotation, x, y }}
+    transition={{ duration: 0.8, delay, ease: "easeOut" }}
+    className="absolute hidden lg:flex flex-col p-5 bg-card border-2 border-foreground/5 rounded-2xl w-60 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.02)]"
   >
-    {children}
-  </motion.div>
-);
-
-const JournalCard = () => {
-  return (
-    <div className="relative w-full max-w-4xl min-h-[600px] flex items-center justify-center mt-12">
-      {/* Hand-drawn doodles */}
-      <DoodleSparkle className="absolute top-0 left-[20%] -rotate-12 opacity-20" />
-      <DoodleHeart className="absolute bottom-10 left-[15%] rotate-12 opacity-20" />
-      <DoodleLoop className="absolute top-[10%] right-[15%] opacity-20" />
-      <DoodleSparkle className="absolute bottom-[20%] right-[20%] scale-150 text-yellow-400/20 rotate-45" />
-
-      {/* Scattered entries */}
-      <EntryCard rotation={-12} x="-220px" y="-150px" delay={0.4} className="shadow-2xl border-none">
-        <span className="text-[10px] text-muted-foreground mb-2 font-bold uppercase tracking-widest opacity-50">Oct 12, 2023</span>
-        <p className="text-sm font-heading leading-relaxed text-foreground/80 font-medium">Finally started the new project. Feeling nervous but excited! 🚀</p>
-      </EntryCard>
-
-      <EntryCard rotation={8} x="240px" y="-120px" delay={0.6} className="shadow-2xl border-none">
-        <span className="text-[10px] text-muted-foreground mb-2 font-bold uppercase tracking-widest opacity-50">Nov 04, 2023</span>
-        <p className="text-sm font-heading leading-relaxed text-foreground/80 font-medium">The weather was perfect today. Had the best coffee by the lake. ☕️</p>
-      </EntryCard>
-
-      <EntryCard rotation={-5} x="260px" y="140px" delay={0.8} className="shadow-2xl border-none">
-        <span className="text-[10px] text-muted-foreground mb-2 font-bold uppercase tracking-widest opacity-50">Dec 21, 2023</span>
-        <p className="text-sm font-heading leading-relaxed text-foreground/80 font-medium">Reflecting on this year. So much has changed. Grateful for the small wins.</p>
-      </EntryCard>
-
-      <EntryCard rotation={15} x="-240px" y="120px" delay={1.0} className="shadow-2xl border-none">
-        <span className="text-[10px] text-muted-foreground mb-2 font-bold uppercase tracking-widest opacity-50">Jan 02, 2024</span>
-        <p className="text-sm font-heading leading-relaxed text-foreground/80 font-medium">New Year's resolutions: 1. Write more. 2. Breathe deeper. ✨</p>
-      </EntryCard>
-
-      {/* Main Login Card */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative w-full max-w-md z-10"
-      >
-        <Card className="relative overflow-hidden border-none bg-linear-to-br from-card via-card to-card/95 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)] rounded-[2.5rem]">
-          <div className="p-10">
-            <div className="flex flex-col items-center text-center mb-8">
-              <h2 className="text-4xl font-heading mb-2 text-primary">Dasi Journal</h2>
-              <p className="text-muted-foreground font-medium">Your private sanctuary.</p>
-            </div>
-            <SignInForm className="max-w-none" />
-          </div>
-        </Card>
-      </motion.div>
-    </div>
-  );
-};
-
-const PromptCard = ({ 
-  text, 
-  borderColor, 
-  rotation, 
-  delay 
-}: { 
-  text: string; 
-  borderColor: string; 
-  rotation: number; 
-  delay: number;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20, rotate: rotation }}
-    whileInView={{ opacity: 1, y: 0, rotate: rotation }}
-    viewport={{ once: true }}
-    transition={{ delay, duration: 0.5 }}
-    whileHover={{ 
-      rotate: rotation,
-      scale: 1.02,
-      transition: { type: "spring", stiffness: 400, damping: 10 }
-    }}
-    className={cn(
-      "relative w-full p-10 flex items-center justify-center text-center cursor-default group",
-      "bg-linear-to-br from-card to-card shadow-2xl border-none",
-      borderColor.replace('border-', 'bg-').replace('200', '50/20')
-    )}
-  >
-    <p className="font-heading text-2xl text-foreground/80 leading-relaxed px-4">
-      {text}
+    <span className="text-[10px] font-bold uppercase tracking-wider text-primary mb-2">{date}</span>
+    <p className="text-sm font-medium leading-relaxed text-foreground/70 italic line-clamp-3">
+      "{text}"
     </p>
-
-    <div className="absolute top-4 left-1/2 -translate-x-1/2 opacity-10 group-hover:opacity-40 transition-opacity">
-      <SparklesIcon className="size-5" />
-    </div>
   </motion.div>
-);
-
-const PromptsSection = () => {
-  const prompts = [
-    { text: "What made you smile today?", borderColor: "border-yellow-200", rotation: -2 },
-    { text: "Write about a song that feels like home.", borderColor: "border-rose-200", rotation: 1 },
-    { text: "If today were a flavor, what would it be?", borderColor: "border-blue-200", rotation: -1 },
-    { text: "Describe a dream you never want to forget.", borderColor: "border-emerald-200", rotation: 2 },
-  ];
-
-  return (
-    <MaxWidthWrapper className="py-32">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div className="col-span-full mb-12 text-center md:text-left">
-          <MagicBadge title="Inspiration" />
-          <h2 className="text-5xl md:text-7xl font-heading mt-6">Never a blank page.</h2>
-          <p className="text-xl text-muted-foreground mt-4 max-w-xl font-medium">
-            Daily prompts to spark your reflection and keep the ink flowing.
-          </p>
-        </div>
-        {prompts.map((p, i) => (
-          <PromptCard key={i} {...p} delay={i * 0.1} />
-        ))}
-      </div>
-    </MaxWidthWrapper>
-  );
-};
-
-const MarkerStroke = ({ 
-  className, 
-  color = "text-primary/10", 
-  delay = 0, 
-  width = 100, 
-  height = 20,
-  strokeWidth = 12,
-  path = "M0 10 Q25 5, 50 10 T100 10" 
-}: { 
-  className?: string, 
-  color?: string, 
-  delay?: number,
-  width?: number,
-  height?: number,
-  strokeWidth?: number,
-  path?: string
-}) => (
-  <svg
-    viewBox={`0 0 ${width} ${height}`}
-    preserveAspectRatio="none"
-    className={cn("overflow-visible", className)}
-  >
-    <motion.path
-      d={path}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      className={color}
-      initial={{ pathLength: 0, opacity: 0 }}
-      whileInView={{ pathLength: 1, opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.5, delay, ease: "easeInOut" }}
-    />
-  </svg>
 );
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <NavBar />
       
-      {/* ----------------------------------Hero Section---------------------------------- */}
-      <div className="relative flex flex-col justify-center items-center pt-24 md:pt-36 overflow-hidden px-4">
-        {/* Large Wobbly Marker Stroke Across Page - Moved Up */}
-        <MarkerStroke 
-          className="absolute top-[38%] left-0 w-[120vw] h-24 md:h-32 -rotate-1 opacity-40 -z-20" 
-          color="text-yellow-200/60" 
-          delay={0.2}
-          width={1000}
-          strokeWidth={16}
-          path="M0 50 Q250 20, 500 50 T1000 50"
-        />
+      <main className="relative flex flex-col items-center pt-24 pb-32 px-6">
         
-        <AnimationContainer>
-          <div className="flex flex-col items-center text-center mb-4">
-            <h1 className="font-heading text-7xl md:text-[9rem] leading-none max-w-6xl tracking-tighter text-foreground font-bold">
-              Write your{" "}
-              <span className="relative inline-block mt-4 md:mt-0 px-4">
-                heart out.
-                <MarkerStroke 
-                  className="absolute -bottom-2 left-0 w-full h-8 opacity-40 -z-10" 
-                  color="text-primary/40" 
-                  delay={0.8}
-                  strokeWidth={12}
-                  path="M0 10 Q50 0, 100 10"
-                />
-              </span>
-            </h1>
-            <p className="text-xl md:text-3xl text-muted-foreground mt-12 text-center max-w-2xl font-medium">
-              The cozy, end-to-end encrypted home for your deepest thoughts and brightest days.
+        {/* Simple Background Decor */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,oklch(0.6_0.18_250/0.03)_0%,transparent_70%)] pointer-events-none -z-10" />
+
+        {/* Headline Section */}
+        <div className="text-center mb-16 max-w-4xl relative">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold mb-8 border border-primary/20"
+          >
+            <Sparkles size={14} />
+            END-TO-END ENCRYPTED JOURNALING
+          </motion.div>
+          
+          <h1 className="text-6xl md:text-8xl mb-8 leading-[0.95]">
+            A private space for your <span className="text-primary italic">wildest</span> thoughts.
+          </h1>
+          
+          <p className="text-xl md:text-2xl max-w-2xl mx-auto text-muted-foreground font-medium leading-relaxed">
+            Beautifully simple, incredibly secure. The modern home for your daily reflections and big ideas.
+          </p>
+        </div>
+
+        {/* Hero Stack */}
+        <div className="relative w-full max-w-5xl flex items-center justify-center min-h-[600px] mt-12">
+          
+          {/* Background Scraps */}
+          <EntryCard 
+            rotation={-12} x="-300px" y="-140px" delay={0.2}
+            date="Oct 14"
+            text="Finally feeling like I'm making progress. Small wins every day."
+          />
+          <EntryCard 
+            rotation={8} x="320px" y="-120px" delay={0.4}
+            date="Nov 02"
+            text="The best coffee is the one shared with good friends. ☕️"
+          />
+          <EntryCard 
+            rotation={-6} x="340px" y="140px" delay={0.6}
+            date="Dec 21"
+            text="Reflecting on the year. So much to be grateful for."
+          />
+          <EntryCard 
+            rotation={15} x="-320px" y="160px" delay={0.8}
+            date="Jan 05"
+            text="New goals, new energy. Ready to start writing again."
+          />
+
+          {/* Central Hero Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "circOut" }}
+            className="relative w-full max-w-md z-10"
+          >
+            {/* Subtle multi-layer stack effect */}
+            <div className="absolute inset-0 translate-x-3 translate-y-3 bg-foreground/5 rounded-[2.5rem] -z-10" />
+            
+            <Card className="p-10 md:p-12 bg-card border-2 border-foreground/10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] overflow-hidden">
+              <div className="flex flex-col items-center text-center mb-10">
+                <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-primary/20 rotate-[-4deg]">
+                  <Sparkles size={32} className="text-white" />
+                </div>
+                <h2 className="text-4xl font-bold mb-3 tracking-tighter">Welcome Back</h2>
+                <p className="text-muted-foreground font-medium italic">Open your secret journal...</p>
+              </div>
+
+              <SignInForm />
+            </Card>
+          </motion.div>
+        </div>
+
+        {/* Meaningful Resources Section */}
+        <section className="mt-48 w-full max-w-6xl">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div className="max-w-2xl">
+              <span className="text-primary font-black tracking-widest text-sm uppercase">CORE PILLARS</span>
+              <h2 className="text-5xl md:text-7xl font-bold mt-4 text-foreground">Built for your peace of mind.</h2>
+            </div>
+            <button className="text-lg font-black underline decoration-4 underline-offset-8 hover:text-primary transition-colors text-foreground">
+              View all documentation
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { 
+                title: "Open Sourced", 
+                desc: "Transparent code you can audit yourself. Check us out on GitHub and contribute to the future of privacy.",
+                link: "https://github.com",
+                icon: <ArrowRight className="-rotate-45" />
+              },
+              { 
+                title: "E2E Encrypted", 
+                desc: "Your data is encrypted before it ever leaves your device. Only you hold the keys to your secret sanctuary.",
+                link: "#",
+                icon: <ShieldCheck />
+              },
+              { 
+                title: "Always Synced", 
+                desc: "Access your reflections from any device. Securely synced and available whenever inspiration strikes.",
+                link: "#",
+                icon: <Cloud />
+              }
+            ].map((resource, i) => (
+              <a
+                key={i}
+                href={resource.link}
+                className="group p-10 rounded-[2.5rem] border-4 border-foreground bg-card shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-8 border-2 border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors">
+                   {i === 0 ? <ArrowRight className="-rotate-45" size={28} /> : i === 1 ? <ShieldCheck size={28} /> : <Cloud size={28} />}
+                </div>
+                <h3 className="text-3xl font-black mb-4 text-foreground">{resource.title}</h3>
+                <p className="font-medium text-foreground/60 leading-relaxed mb-8 text-lg">
+                  {resource.desc}
+                </p>
+                <div className="flex items-center gap-2 font-black text-sm text-primary uppercase tracking-widest">
+                  Learn More <ArrowRight size={16} />
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        {/* Interactive Prompts Section */}
+        <section className="mt-60 w-full max-w-5xl text-center">
+          <div className="mb-20">
+            <div className="inline-block bg-primary text-white px-6 py-2 rounded-full font-black text-sm border-4 border-foreground mb-8 rotate-[2deg] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              FEELING STUCK? 📝
+            </div>
+            <h2 className="text-6xl md:text-8xl font-bold mb-8 text-foreground leading-none tracking-tighter">Daily Sparks.</h2>
+            <p className="text-xl md:text-2xl max-w-2xl mx-auto text-foreground/60 font-medium">
+              Click a prompt to start your reflection. No more staring at a blank page.
             </p>
           </div>
-        </AnimationContainer>
 
-        <JournalCard />
-      </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              { text: "What is one thing you're proud of today?", rotation: -2 },
+              { text: "If you could tell your younger self one thing, what would it be?", rotation: 1 },
+              { text: "Describe a small moment that made you smile this morning.", rotation: -1 },
+              { text: "What is a challenge you're currently facing, and how are you growing?", rotation: 2 },
+            ].map((prompt, i) => (
+              <motion.button
+                key={i}
+                whileHover={{ rotate: prompt.rotation * 1.5, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="p-10 text-left rounded-[2.5rem] border-4 border-foreground bg-card shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all group"
+              >
+                <div className="flex justify-between items-start gap-6">
+                  <p className="text-2xl md:text-3xl font-bold leading-tight italic text-foreground/80">
+                    "{prompt.text}"
+                  </p>
+                  <div className="w-12 h-12 rounded-full border-4 border-foreground flex items-center justify-center shrink-0 bg-primary text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-none transition-all">
+                    <Pen size={20} />
+                  </div>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </section>
 
-      {/* ----------------------------------Prompts Section---------------------------------- */}
-      <div className="relative overflow-hidden">
-        {/* Thicker, longer wobbly accent strokes */}
-        <MarkerStroke 
-          className="absolute top-[15%] right-[-10%] w-[500px] h-24 rotate-12 opacity-30" 
-          color="text-blue-200" 
-          strokeWidth={14}
-          width={500}
-          path="M0 30 Q250 0, 500 30"
-        />
-        <MarkerStroke 
-          className="absolute bottom-[20%] left-[-5%] w-[400px] h-20 -rotate-6 opacity-30" 
-          color="text-rose-200" 
-          strokeWidth={14}
-          width={400}
-          path="M0 20 Q200 40, 400 20"
-        />
-        <MarkerStroke 
-          className="absolute top-[60%] right-[10%] w-[300px] h-16 -rotate-12 opacity-20" 
-          color="text-yellow-200" 
-          strokeWidth={12}
-          width={300}
-          path="M0 15 Q150 30, 300 15"
-        />
-        <PromptsSection />
-      </div>
+        {/* Modern CTA */}
+        <section className="mt-48 mb-20 text-center">
+          <h2 className="text-5xl md:text-7xl mb-12 max-w-3xl mx-auto">Ready to start your journey?</h2>
+          <button className="bg-primary text-white px-10 py-5 rounded-2xl text-2xl font-black border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all flex items-center gap-3 mx-auto">
+            Start Writing for Free
+            <ArrowRight size={28} />
+          </button>
+        </section>
 
-      {/* ----------------------------------Features section---------------------------------- */}
-      <div className="relative overflow-hidden">
-        <MarkerStroke 
-          className="absolute top-[10%] left-[5%] w-[350px] h-20 rotate-[35deg] opacity-20" 
-          color="text-emerald-200" 
-          strokeWidth={14}
-          width={350}
-          path="M0 20 Q175 0, 350 20"
-        />
-        <MarkerStroke 
-          className="absolute bottom-[5%] right-[0%] w-[450px] h-24 -rotate-3 opacity-20" 
-          color="text-blue-200" 
-          strokeWidth={14}
-          width={450}
-          path="M0 30 Q225 60, 450 30"
-        />
-        <MaxWidthWrapper className="pt-32 pb-32 relative z-10">
-          <AnimationContainer delay={0.3}>
-            <div className="flex flex-col w-full items-center justify-center py-12">
-              <h2 className="text-center text-5xl md:text-7xl leading-tight font-heading text-foreground relative">
-                Everything you need.
-                <MarkerStroke 
-                  className="absolute -bottom-6 left-0 w-full h-12 opacity-40" 
-                  delay={0.5} 
-                  strokeWidth={14}
-                  path="M0 20 C200 0, 800 40, 1000 20"
-                  width={1000}
-                />
-              </h2>
-            </div>
-          </AnimationContainer>
-          
-          <AnimationContainer delay={0.4}>
-            <BentoGrid className="py-12">
-              {CARDS.map((feature, idx) => (
-                <BentoCard key={idx} {...feature} />
-              ))}
-            </BentoGrid>
-          </AnimationContainer>
-        </MaxWidthWrapper>
-      </div>
+      </main>
 
       <Footer />
     </div>

@@ -86,9 +86,9 @@ const BentoCard = ({
     key={name}
     className={cn(
       "group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-[2.5rem] h-80",
-      "bg-linear-to-br from-card to-card/95 shadow-2xl border-none",
-      "hover:shadow-3xl hover:-rotate-1",
-      "transition-all duration-500",
+      "bg-linear-to-br from-card to-card/95 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)] border-2 border-primary/5",
+      "hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)] hover:translate-x-[2px] hover:translate-y-[2px] hover:-rotate-1",
+      "transition-all duration-300",
       className
     )}
   >
