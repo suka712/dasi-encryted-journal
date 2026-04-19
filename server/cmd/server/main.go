@@ -13,9 +13,9 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/resend/resend-go/v3"
 
-	"github.com/trnahnh/katana-id/internal/auth"
+	"github.com/trnahnh/katana-id/internal/features/auth"
 	"github.com/trnahnh/katana-id/internal/db"
-	"github.com/trnahnh/katana-id/internal/health"
+	"github.com/trnahnh/katana-id/internal/features/health"
 	"github.com/trnahnh/katana-id/util"
 )
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"regexp"
 	"strings"
@@ -56,6 +57,7 @@ func (h *Handler) Me(w http.ResponseWriter, r *http.Request) {
 		Valid: true,
 	})
 	if err != nil {
+		log.Printf("Me: GetSession failed: %v", err)
 		util.WriteJSON(w, http.StatusUnauthorized, util.ErrorResponse{Error: "Unauthorized"})
 		return
 	}
@@ -63,27 +65,28 @@ func (h *Handler) Me(w http.ResponseWriter, r *http.Request) {
 	email := session.Email
 	user, err := h.Queries.GetUserByEmail(ctx, email)
 	if err != nil {
+		log.Printf("Me: GetUserByEmail failed for %s: %v", email, err)
 		util.WriteJSON(w, http.StatusUnauthorized, util.ErrorResponse{Error: "Unauthorized"})
 		return
 	}
 
 	util.WriteJSON(w, http.StatusOK, meResponse{
 		Email: email,
-		Username: user.Username, 
+		Username: user.Username,
 	})
 }
 
 func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := r.Cookie("session")
 	id, _ := uuid.Parse(cookie.Value)
-	
+
 	token := pgtype.UUID{
 		Valid: true,
 		Bytes: id,
 	}
 	ctx := r.Context()
 	h.Queries.DeleteSessionByToken(ctx, token)
-	
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session",
 		Value:    "",
@@ -110,6 +113,7 @@ func (h *Handler) SendOTP(w http.ResponseWriter, r *http.Request) {
 
 	otp, err := genOTP()
 	if err != nil {
+		log.Printf("SendOTP: genOTP failed: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
 		return
 	}
@@ -124,11 +128,13 @@ func (h *Handler) SendOTP(w http.ResponseWriter, r *http.Request) {
 		Otp:   otp,
     ExpiresAt: expires,
 	}); err != nil {
+		log.Printf("SendOTP: CreateOTP failed: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
     return
 	}
 
 	if err := sendOTP(h.EmailClient, req.Email, otp); err != nil {
+		log.Printf("SendOTP: sendOTP (Resend) failed: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
 		return
 	}
@@ -161,6 +167,7 @@ func (h *Handler) VerifyOTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
+		log.Printf("VerifyOTP: GetOTPByEmail failed: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
 		return
 	}
@@ -171,6 +178,7 @@ func (h *Handler) VerifyOTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.Queries.DeleteOTPsByEmail(ctx, req.Email); err != nil {
+		log.Printf("VerifyOTP: DeleteOTPsByEmail failed: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
 		return
 	}
@@ -183,10 +191,12 @@ func (h *Handler) VerifyOTP(w http.ResponseWriter, r *http.Request) {
 			Email:    req.Email,
 		})
 		if err != nil {
+			log.Printf("VerifyOTP: CreateUser failed for %s: %v", req.Email, err)
 			util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
 			return
 		}
 	} else if err != nil {
+		log.Printf("VerifyOTP: GetUserByEmail failed: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
 		return
 	}
@@ -196,6 +206,7 @@ func (h *Handler) VerifyOTP(w http.ResponseWriter, r *http.Request) {
 		ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(7 * 24 * time.Hour), Valid: true},
 	})
 	if err != nil {
+		log.Printf("VerifyOTP: CreateSession failed: %v", err)
 		util.WriteJSON(w, http.StatusInternalServerError, util.ErrorResponse{Error: "Something went wrong"})
 		return
 	}

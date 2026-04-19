@@ -2,7 +2,6 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
 import LandingPage from "./pages/public-pages/LandingPage";
-import SignInPage from "./pages/public-pages/SignInPage";
 import NotFoundPage from "./pages/public-pages/NotFoundPage";
 import JournalPage from "./pages/app-pages/JournalPage";
 import AuthGuard from "./components/AuthGuard";
@@ -20,7 +19,6 @@ const AnimatedRoutes = () => {
       <motion.div key={location.pathname} variants={pageVariants} initial="initial" animate="animate" exit="exit">
         <Routes location={location}>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/signin" element={<SignInPage />} />
           <Route path="/journal" element={<AuthGuard><JournalPage /></AuthGuard>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
